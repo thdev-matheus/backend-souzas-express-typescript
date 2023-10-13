@@ -2,40 +2,29 @@ import { IUserLogin } from "../../types/user.types";
 import { AppError } from "../../errors";
 import { compareSync } from "bcrypt";
 import jwt from "jsonwebtoken";
+import { users } from "../../database/users";
 
 export const userLoginService = async ({ username, password }: IUserLogin) => {
-  if (!name || !password) {
-    throw new AppError(400, "campos email e password são obrigatórios");
+  if (!username || !password) {
+    throw new AppError(400, "nome de usuário e senha são obrigatórios");
   }
 
-  const userRepo = AppDataSource.getRepository(User);
-  const user = await userRepo.findOne({
-    where: { name },
-    relations: { company: true },
-  });
+  const user = users.find((usr) => usr.username === username);
 
   if (!user) {
-    throw new AppError(401, "nome ou senha inválidos");
+    throw new AppError(401, "credenciais inválidas");
   }
 
   const passwordMatch = compareSync(password, user.password);
 
   if (!passwordMatch) {
-    throw new AppError(401, "nome ou senha inválidos");
-  }
-
-  if (!user.isActive) {
-    user.isActive = true;
-    await userRepo.save(user);
+    throw new AppError(401, "credenciais inválidas");
   }
 
   const token = jwt.sign(
     {
       userId: user.id,
-      userName: user.name,
-      userIsAdm: user.isAdm,
-      userIsStaff: user.isStaff,
-      userCompanyId: user.company.id,
+      userUsername: user.username,
     },
     process.env.SECRET_KEY!,
     { expiresIn: "24h" }
