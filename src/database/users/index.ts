@@ -1,13 +1,10 @@
-import { hashSync } from "bcrypt";
-import { IUser } from "../../types/user.types";
-import { v4 as uuid } from "uuid";
+import { User } from "../../models/user.model";
 
-export const users: IUser[] = [
-  {
-    id: uuid(),
-    image: "https://avatars.githubusercontent.com/u/109465340?v=4",
-    username: "Theus",
+export const users: User[] = [
+  new User({
     name: "Matheus Vieira",
-    password: hashSync("Matheus!123", 10),
-  },
+    image: "https://avatars.githubusercontent.com/u/109465340?v=4",
+    password: "Matheus!123",
+    username: "Theus",
+  }),
 ];

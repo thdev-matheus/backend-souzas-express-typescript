@@ -1,10 +1,13 @@
-import { IUserLogin } from "../../types/user.types";
+import { IUserLoginResponse, IUserLoginRequest } from "../../types/user.types";
 import { AppError } from "../../errors";
 import { compareSync } from "bcrypt";
 import jwt from "jsonwebtoken";
 import { users } from "../../database/users";
 
-export const userLoginService = async ({ username, password }: IUserLogin) => {
+export const loginService = ({
+  username,
+  password,
+}: IUserLoginRequest): IUserLoginResponse => {
   if (!username || !password) {
     throw new AppError(400, "nome de usuário e senha são obrigatórios");
   }
@@ -30,5 +33,5 @@ export const userLoginService = async ({ username, password }: IUserLogin) => {
     { expiresIn: "24h" }
   );
 
-  return { token, user };
+  return { token, user: user.info() };
 };
