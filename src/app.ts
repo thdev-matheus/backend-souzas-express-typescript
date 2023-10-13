@@ -1,8 +1,8 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import "express-async-errors";
-// import { handleErrorMiddleware } from "./errors";
 import { appRoutes } from "./routes";
+import { handleErrorMiddleware } from "./errors";
 
 export const app = express();
 app.use(cors());
@@ -18,4 +18,4 @@ app.get("/", (req: Request, res: Response) => {
 
 appRoutes(app);
 
-// app.use(handleErrorMiddleware);
+app.use(handleErrorMiddleware);
