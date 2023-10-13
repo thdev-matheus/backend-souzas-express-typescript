@@ -1,5 +1,4 @@
 import { v4 as uuid } from "uuid";
-import { hashSync } from "bcrypt";
 import { IUserBase, IUserInfo } from "../types/user.types";
 
 export class User {
@@ -13,7 +12,7 @@ export class User {
     this.image = image;
     this.username = username;
     this.name = name;
-    this.password = hashSync(password, 10);
+    this.password = password;
   }
 
   info(): IUserInfo {

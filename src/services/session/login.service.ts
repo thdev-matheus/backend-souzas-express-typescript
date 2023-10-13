@@ -1,6 +1,5 @@
 import { IUserLoginResponse, IUserLoginRequest } from "../../types/user.types";
 import { AppError } from "../../errors";
-import { compareSync } from "bcrypt";
 import jwt from "jsonwebtoken";
 import { users } from "../../database/users";
 
@@ -18,7 +17,7 @@ export const loginService = ({
     throw new AppError(401, "credenciais inválidas");
   }
 
-  const passwordMatch = compareSync(password, user.password);
+  const passwordMatch = password === user.password;
 
   if (!passwordMatch) {
     throw new AppError(401, "credenciais inválidas");
