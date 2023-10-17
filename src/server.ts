@@ -17,8 +17,6 @@ const init = async () => {
   });
 
   io.on("connection", async (socket) => {
-    console.log("conectou");
-
     const userData: IUserInfo = socket.handshake.query as unknown as IUserInfo;
     const user = users.find((u) => u.username === userData.username);
 
@@ -43,10 +41,6 @@ const init = async () => {
     }, 1000);
 
     socket.on("disconnect", () => {
-      console.log(
-        `usuário ${userData.username} foi desconectado por ser desconhecido!`
-      );
-
       const goodBye = new Message({
         content: [
           `${user.username} foi de arrasta pra cima!`,
