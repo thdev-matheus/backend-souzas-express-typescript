@@ -18,11 +18,11 @@ const init = async () => {
 
     if (!user) {
       socket.disconnect();
-      console.log(`U estranho foi desconectado`);
+      console.log(`Um estranho foi desconectado`);
       return;
     }
 
-    console.log(`${user.username} acaba de entrar!`);
+    console.log(`${user.username} entrou!`);
 
     const message = new Message({
       content: [
@@ -57,8 +57,6 @@ const init = async () => {
     });
 
     socket.on("chat", (message) => {
-      console.log(message);
-
       io.emit("chat", message);
     });
   });
