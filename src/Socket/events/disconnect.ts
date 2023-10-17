@@ -2,6 +2,7 @@ import { Server, Socket } from "socket.io";
 import { User } from "../../models/user.model";
 import { Message } from "../../models/message.model";
 import { getDateHour } from "../../utils";
+import { connectedUsers } from "../../database/connectedUsers";
 
 export const socketDisconnetcEvent = (
   socket: Socket,
@@ -21,6 +22,9 @@ export const socketDisconnetcEvent = (
       type: "system",
       info: getDateHour(),
     });
+
+    const indexConnectedUsers = connectedUsers.indexOf(user);
+    connectedUsers.splice(indexConnectedUsers, 1);
 
     io.emit("chat", goodBye.messageObj());
   });

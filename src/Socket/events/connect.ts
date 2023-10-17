@@ -1,6 +1,7 @@
 import { Server, Socket } from "socket.io";
 import { IUserInfo } from "../../types/user.types";
 import { users } from "../../database/users";
+import { connectedUsers } from "../../database/connectedUsers";
 import { Message } from "../../models/message.model";
 import { getDateHour } from "../../utils";
 
@@ -29,6 +30,10 @@ export const socketConnectEvent = (socket: Socket, io: Server) => {
     setTimeout(() => {
       io.emit("chat", message.messageObj());
     }, 1000);
+
+    if (!connectedUsers.find((usr) => usr.id === user.id)) {
+      connectedUsers.push(user);
+    }
 
     return user;
   }
