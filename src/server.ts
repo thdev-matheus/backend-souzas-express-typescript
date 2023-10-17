@@ -1,4 +1,4 @@
-import { app, server, io } from "./app";
+import { server, io } from "./app";
 import "dotenv/config";
 import { users } from "./database/users";
 import { IUserInfo } from "./types/user.types";
@@ -6,12 +6,8 @@ import { Message } from "./models/message.model";
 import { getDateHour } from "./utils";
 
 const init = async () => {
-  const APP_PORT = process.env.APP_PORT || 8081;
-  const SOCKET_PORT = process.env.SOCKET_PORT || 8082;
+  const SOCKET_PORT = process.env.SOCKET_PORT || 8081;
 
-  app.listen(APP_PORT, () => {
-    console.log(`Servidor iniciado na porta: ${APP_PORT}`);
-  });
   server.listen(SOCKET_PORT, () => {
     console.log(`Socket  iniciado na porta: ${SOCKET_PORT}`);
   });
