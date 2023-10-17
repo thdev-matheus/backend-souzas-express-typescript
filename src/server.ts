@@ -56,9 +56,7 @@ const init = async () => {
     });
 
     socket.on("chat", (message) => {
-      // console.log(message);
-      // socket.broadcast.emit("chat", message); // envia para todos, menos para o emissor.
-      io.emit("chat", message); // envia para todos, inclusive para o emissor
+      io.emit("chat", message);
     });
   });
 };
