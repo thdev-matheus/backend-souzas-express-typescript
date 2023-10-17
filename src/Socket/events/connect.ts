@@ -32,7 +32,7 @@ export const socketConnectEvent = (socket: Socket, io: Server) => {
     }, 1000);
 
     if (!connectedUsers.find((usr) => usr.id === user.id)) {
-      connectedUsers.push(user);
+      connectedUsers.push(user.info());
     }
 
     return user;
