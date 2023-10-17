@@ -22,8 +22,11 @@ const init = async () => {
 
     if (!user) {
       socket.disconnect();
+      console.log(`U estranho foi desconectado`);
       return;
     }
+
+    console.log(`${user.username} acaba de entrar!`);
 
     const message = new Message({
       content: [
@@ -41,6 +44,8 @@ const init = async () => {
     }, 1000);
 
     socket.on("disconnect", () => {
+      console.log(`${user.username} foi de arrasta pra cima!`);
+
       const goodBye = new Message({
         content: [
           `${user.username} foi de arrasta pra cima!`,
@@ -56,9 +61,9 @@ const init = async () => {
     });
 
     socket.on("chat", (message) => {
-      // console.log(message);
-      // socket.broadcast.emit("chat", message); // envia para todos, menos para o emissor.
-      io.emit("chat", message); // envia para todos, inclusive para o emissor
+      console.log(message);
+
+      io.emit("chat", message);
     });
   });
 };
