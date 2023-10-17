@@ -15,6 +15,8 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/", (req: Request, res: Response) => {
+  console.log("API Funcionando!");
+
   res.json({
     message:
       "Bem-vindo(a) Souza's, O chat secreto da família. Esta aplicação foi criada por Matheus Henrique Vieira Cardoso.",
