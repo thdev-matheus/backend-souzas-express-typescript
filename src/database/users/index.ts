@@ -13,4 +13,28 @@ export const users: User[] = [
     password: "Jess!123",
     username: "Jess",
   }),
+  new User({
+    name: "Cláudio Souza",
+    image: "https://i.ibb.co/W0jLRGj/Cl-udio-Souza.png",
+    password: "Claudio!123",
+    username: "NuncaDuvidedeCristo",
+  }),
+  new User({
+    name: "Diego Martins",
+    image: "https://i.ibb.co/3ztJmC8/Diego-Martins.png",
+    password: "Diego!123",
+    username: "GoDiegoGo",
+  }),
+  new User({
+    name: "Mônica Souza",
+    image: "https://i.ibb.co/wh1rR5D/Monica-Souza.png",
+    password: "Monica!123",
+    username: "Manica",
+  }),
+  new User({
+    name: "Pedro Henrique",
+    image: "https://i.ibb.co/v1zn9DY/Pedro-Henrique.png",
+    password: "Pedro!123",
+    username: "Pedin",
+  }),
 ];
