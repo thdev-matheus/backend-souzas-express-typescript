@@ -1,5 +1,9 @@
-import { app, server, socketIo } from "./app";
+import { app, server, io } from "./app";
 import "dotenv/config";
+import { users } from "./database/users";
+import { IUserInfo } from "./types/user.types";
+import { Message } from "./models/message.model";
+import { getDateHour } from "./utils";
 
 const init = async () => {
   const APP_PORT = process.env.APP_PORT || 8081;
@@ -12,27 +16,55 @@ const init = async () => {
     console.log(`Socket  iniciado na porta: ${SOCKET_PORT}`);
   });
 
-  socketIo.on("connection", async (socket) => {
-    console.log(`usuário ${socket.id} contectado!`);
-    console.log(
-      `Agora somos ${socketIo.sockets.sockets.size} guerreiro${
-        socketIo.sockets.sockets.size > 1 ? "s" : ""
-      }.`
-    ); //quantidade de sockets conectados
+  io.on("connection", async (socket) => {
+    console.log("conectou");
+
+    const userData: IUserInfo = socket.handshake.query as unknown as IUserInfo;
+    const user = users.find((u) => u.username === userData.username);
+
+    if (!user) {
+      socket.disconnect();
+      return;
+    }
+
+    const message = new Message({
+      content: [
+        `${user.username} acaba de entrar!`,
+        `Agora tem ${io.sockets.sockets.size} guerreiro${
+          io.sockets.sockets.size > 1 ? "s" : ""
+        } na sala.`,
+      ],
+      type: "system",
+      info: getDateHour(),
+    });
+
+    setTimeout(() => {
+      io.emit("chat", message.messageObj());
+    }, 1000);
 
     socket.on("disconnect", () => {
-      console.log(`usuário ${socket.id} foi de arrasta pra cima!`);
       console.log(
-        `Agora somos ${socketIo.sockets.sockets.size} guerreiro${
-          socketIo.sockets.sockets.size > 1 ? "s" : ""
-        }.`
-      ); //quantidade de sockets conectados
+        `usuário ${userData.username} foi desconectado por ser desconhecido!`
+      );
+
+      const goodBye = new Message({
+        content: [
+          `${user.username} foi de arrasta pra cima!`,
+          `Agora tem ${io.sockets.sockets.size} guerreiro${
+            io.sockets.sockets.size > 1 ? "s" : ""
+          } na sala.`,
+        ],
+        type: "system",
+        info: getDateHour(),
+      });
+
+      io.emit("chat", goodBye.messageObj());
     });
 
     socket.on("chat", (message) => {
-      console.log(message);
-      socket.broadcast.emit("chat", message); // envia para todos, menos para o emissor.
-      // socketIo.emit("message", message); // envia para todos, inclusive para o emissor
+      // console.log(message);
+      // socket.broadcast.emit("chat", message); // envia para todos, menos para o emissor.
+      io.emit("chat", message); // envia para todos, inclusive para o emissor
     });
   });
 };

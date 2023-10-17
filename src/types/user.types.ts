@@ -10,6 +10,7 @@ export interface IUserInfo {
   image: string;
   username: string;
   name: string;
+  token?: string;
 }
 
 export interface IUserLoginRequest {

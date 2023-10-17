@@ -8,7 +8,7 @@ import { Server as Io } from "socket.io";
 
 export const app = express();
 export const server = createServer(app);
-export const socketIo = new Io(server, { cors: { origin: "*" } });
+export const io = new Io(server, { cors: { origin: "*" } });
 
 app.use(cors());
 

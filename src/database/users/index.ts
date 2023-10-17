@@ -7,4 +7,10 @@ export const users: User[] = [
     password: "Matheus!123",
     username: "Theus",
   }),
+  new User({
+    name: "Jessica Vieira",
+    image: "https://i.ibb.co/kmvGcG4/jess.jpg",
+    password: "Jess!123",
+    username: "Jess",
+  }),
 ];
