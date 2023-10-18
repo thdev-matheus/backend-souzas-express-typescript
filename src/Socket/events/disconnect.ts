@@ -10,10 +10,10 @@ export const socketDisconnetcEvent = (
   user: User
 ) => {
   socket.on("disconnect", () => {
-    console.log(`${user.username} saiu`);
+    console.log(`${user.name} saiu`);
 
     const goodBye = new Message({
-      content: [`${user.username} saiu`],
+      content: [`${user.name} saiu`],
       type: "system",
       info: getDateHour(),
     });

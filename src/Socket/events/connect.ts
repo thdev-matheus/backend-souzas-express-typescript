@@ -14,10 +14,10 @@ export const socketConnectEvent = (socket: Socket, io: Server) => {
     console.log(`Um estranho foi desconectado`);
     return undefined;
   } else {
-    console.log(`${user.username} entrou!`);
+    console.log(`${user.name} entrou!`);
 
     const message = new Message({
-      content: [`${user.username} entrou!`],
+      content: [`${user.name} entrou!`],
       type: "system",
       info: getDateHour(),
     });
