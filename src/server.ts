@@ -4,6 +4,7 @@ import { users } from "./database/users";
 import { IUserInfo } from "./types/user.types";
 import { Message } from "./models/message.model";
 import { getDateHour } from "./utils";
+import { socketConnection } from "./Socket/socket.connection";
 
 const init = async () => {
   const SOCKET_PORT = process.env.SOCKET_PORT || 8081;
@@ -12,56 +13,7 @@ const init = async () => {
     console.log(`Socket  iniciado na porta: ${SOCKET_PORT}`);
   });
 
-  io.on("connection", async (socket) => {
-    const userData: IUserInfo = socket.handshake.query as unknown as IUserInfo;
-    const user = users.find((u) => u.username === userData.username);
-
-    if (!user) {
-      socket.disconnect();
-      console.log(`U estranho foi desconectado`);
-      return;
-    }
-
-    console.log(`${user.username} acaba de entrar!`);
-
-    const message = new Message({
-      content: [
-        `${user.username} acaba de entrar!`,
-        `Agora tem ${io.sockets.sockets.size} guerreiro${
-          io.sockets.sockets.size > 1 ? "s" : ""
-        } na sala.`,
-      ],
-      type: "system",
-      info: getDateHour(),
-    });
-
-    setTimeout(() => {
-      io.emit("chat", message.messageObj());
-    }, 1000);
-
-    socket.on("disconnect", () => {
-      console.log(`${user.username} foi de arrasta pra cima!`);
-
-      const goodBye = new Message({
-        content: [
-          `${user.username} foi de arrasta pra cima!`,
-          `Agora tem ${io.sockets.sockets.size} guerreiro${
-            io.sockets.sockets.size > 1 ? "s" : ""
-          } na sala.`,
-        ],
-        type: "system",
-        info: getDateHour(),
-      });
-
-      io.emit("chat", goodBye.messageObj());
-    });
-
-    socket.on("chat", (message) => {
-      console.log(message);
-
-      io.emit("chat", message);
-    });
-  });
+  socketConnection(io);
 };
 
 init();
