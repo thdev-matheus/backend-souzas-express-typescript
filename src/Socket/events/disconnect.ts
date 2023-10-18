@@ -10,22 +10,22 @@ export const socketDisconnetcEvent = (
   user: User
 ) => {
   socket.on("disconnect", () => {
-    console.log(`${user.username} foi de arrasta pra cima!`);
+    console.log(`${user.username} saiu`);
 
     const goodBye = new Message({
-      content: [
-        `${user.username} foi de arrasta pra cima!`,
-        `Agora tem ${io.sockets.sockets.size} guerreiro${
-          io.sockets.sockets.size > 1 ? "s" : ""
-        } na sala.`,
-      ],
+      content: [`${user.username} saiu`],
       type: "system",
       info: getDateHour(),
     });
 
-    const indexConnectedUsers = connectedUsers.indexOf(user);
+    const indexConnectedUsers = connectedUsers.findIndex(
+      (usr) => usr.id === user.id
+    );
     connectedUsers.splice(indexConnectedUsers, 1);
 
+    console.log(connectedUsers);
+
     io.emit("chat", goodBye.messageObj());
+    io.emit("users", connectedUsers);
   });
 };

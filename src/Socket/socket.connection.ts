@@ -6,7 +6,6 @@ import { getDateHour } from "../utils";
 import { socketChatEvent } from "./events/chat";
 import { socketDisconnetcEvent } from "./events/disconnect";
 import { socketConnectEvent } from "./events/connect";
-import { socketLoggedUsersEvent } from "./events/loggedUsers";
 
 export const socketConnection = (io: Io) => {
   io.on("connection", async (socket) => {
@@ -15,7 +14,6 @@ export const socketConnection = (io: Io) => {
     if (socket.connected && user) {
       socketDisconnetcEvent(socket, io, user);
       socketChatEvent(socket, io);
-      socketLoggedUsersEvent(socket);
     }
   });
 };

@@ -17,23 +17,19 @@ export const socketConnectEvent = (socket: Socket, io: Server) => {
     console.log(`${user.username} entrou!`);
 
     const message = new Message({
-      content: [
-        `${user.username} entrou!`,
-        `Agora tem ${io.sockets.sockets.size} guerreiro${
-          io.sockets.sockets.size > 1 ? "s" : ""
-        } na sala.`,
-      ],
+      content: [`${user.username} entrou!`],
       type: "system",
       info: getDateHour(),
     });
 
-    setTimeout(() => {
-      io.emit("chat", message.messageObj());
-    }, 1000);
-
     if (!connectedUsers.find((usr) => usr.id === user.id)) {
       connectedUsers.push(user.info());
     }
+
+    setTimeout(() => {
+      io.emit("chat", message.messageObj());
+      io.emit("users", connectedUsers);
+    }, 1000);
 
     return user;
   }
